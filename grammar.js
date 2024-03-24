@@ -130,7 +130,7 @@ function constExprOp($, prior, ops) {
 
 /**
  *
- * @param {string} command 
+ * @param {string} command
  *
  * @returns {AliasRule}
  *
@@ -4074,7 +4074,7 @@ const rules = {
     )
   )),
 
-  _method_call_root: $ => choice($.primary, $.implicit_class_handle),
+  _method_call_root: $ => choice($.implicit_class_handle, $.primary),
 
   array_method_name: $ => choice(
     $.method_identifier, 'unique', 'and', 'or', 'xor'
@@ -4340,7 +4340,7 @@ const rules = {
   ),
 
   implicit_class_handle: $ => choice(
-    prec.left(seq('this', optseq('.', 'super'))),
+    prec.left(PREC.PARENT, seq('this', optseq('.', 'super'))),
     'super'
   ),
 
@@ -4810,7 +4810,6 @@ module.exports = grammar({
 
   conflicts: $ => [
     [$.constant_primary, $.primary],
-    [$.implicit_class_handle, $.primary],
     [$.param_expression, $.primary],
     [$.primary, $.queue_dimension],
     [$._checker_or_generate_item, $._module_common_item],
